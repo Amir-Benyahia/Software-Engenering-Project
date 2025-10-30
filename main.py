@@ -1,7 +1,8 @@
-from compressor_factory import CompressorFactory, COMPRESSOR_SPANNING, COMPRESSOR_NON_SPANNING
-import sys # Pour quitter en cas d'erreur
+from compressor_factory import CompressorFactory, COMPRESSOR_SPANNING, COMPRESSOR_NON_SPANNING, COMPRESSOR_OVERFLOW
+import sys
+from typing import List
 
-def test_compression(compressor_name: str, data: list):
+def test_compression(compressor_name: str, data: List[int], **kwargs) -> None:
     """
     Une fonction simple pour tester un type de compresseur.
     """
@@ -10,25 +11,18 @@ def test_compression(compressor_name: str, data: list):
     print(f"Données d'origine ({len(data)} éléments): {data}")
 
     try:
-        # 1. Créer le compresseur via la Factory
-        compressor = CompressorFactory.create_compressor(compressor_name)
-        
-        # 2. Compresser les données
+        compressor = CompressorFactory.create_compressor(compressor_name, **kwargs)
         compressor.compress(data)
-        
-        # 3. Récupérer les données décompressées
         decompressed_data = compressor.decompress()
         
         print(f"Données décompressées: {decompressed_data}")
 
-        # 4. Vérifier si c'est correct
         if data == decompressed_data:
             print("✅ SUCCÈS : Les données sont identiques.")
         else:
             print("❌ ÉCHEC : Les données sont différentes !")
             
-        # 5. Tester l'accès direct (la fonction get())
-        index_to_test = len(data) // 2 # On prend un index au milieu
+        index_to_test = len(data) // 2
         original_val = data[index_to_test]
         get_val = compressor.get(index_to_test)
         
@@ -38,38 +32,33 @@ def test_compression(compressor_name: str, data: list):
         else:
             print("❌ ÉCHEC : get() ne fonctionne pas !")
             
-        # 6. Afficher l'efficacité
-        original_size = len(data) * 4 # 4 octets par int (estimation)
+        original_size = len(data) * 4
         compressed_size = compressor.get_compressed_size_in_bytes()
         print(f"Taille originale (estimée): {original_size} octets")
         print(f"Taille compressée: {compressed_size} octets")
         
     except Exception as e:
         print(f"💥 ERREUR lors du test de '{compressor_name}': {e}")
-        sys.exit(1) # Quitte le programme en cas d'erreur
+        sys.exit(1)
     
     print("-" * 40)
 
 
-# --- POINT D'ENTRÉE PRINCIPAL DU PROGRAMME ---
 if __name__ == "__main__":
     
     print("===== DÉBUT DU TEST DE COMPRESSION =====")
     
-    # Données de test simples (pour k=3 bits)
-    # 1, 2, 3, 4, 5
-    test_data_simple = [1, 2, 3, 4, 5, 6, 7, 0, 1, 3]
+    test_data_simple: List[int] = [1, 2, 3, 4, 5, 6, 7, 0, 1, 3]
+    test_data_medium: List[int] = [100, 2000, 4095, 0, 1234, 567]
+    test_data_overflow: List[int] = [1, 2, 3, 1024, 4, 5, 2048]
     
-    # Données avec des nombres plus grands (pour k=12 bits)
-    # L'exemple du sujet (12 bits)
-    test_data_medium = [100, 2000, 4095, 0, 1234, 567]
-    
-    # Teste le premier compresseur
     test_compression(COMPRESSOR_NON_SPANNING, test_data_simple)
     test_compression(COMPRESSOR_NON_SPANNING, test_data_medium)
     
-    # Teste le second compresseur
     test_compression(COMPRESSOR_SPANNING, test_data_simple)
     test_compression(COMPRESSOR_SPANNING, test_data_medium)
+    
+    print("\n===== TEST DE LA ZONE DE DÉBORDEMENT =====")
+    test_compression(COMPRESSOR_OVERFLOW, test_data_overflow, main_bits=3)
 
     print("\n===== FIN DU TEST DE COMPRESSION =====")
