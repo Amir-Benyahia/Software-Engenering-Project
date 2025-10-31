@@ -1,4 +1,4 @@
-# Software Engineering Project - BitPacking
+# Software Engineering Project
 
 This project was created for the M1 Software Engineering course. 
 
