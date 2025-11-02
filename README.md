@@ -1,4 +1,4 @@
-# Software Engineering Project - BitPacking
+# Software Engineering Project
 
 This project was created for the M1 Software Engineering course. 
 
@@ -27,6 +27,7 @@ source venv/bin/activate
 
 # On Windows:
   .\venv\Scripts\activate
+<<<<<<< HEAD
 ```
 
 ### 3. Run
@@ -105,3 +106,5 @@ Output includes average times for the spanning and overflow compressors.
 - Negative integers are not supported in the current representation.
 - For large proportions of overflow values, `get(i)` in the overflow codec can be slower; an index cache would improve it.
 - To reproduce results on another machine, ensure Python 3.10+ and similar environment; times can vary by hardware.
+=======
+>>>>>>> a4c30e8c9d2b0ae4c719eb8bfdedbb37b580acd6
