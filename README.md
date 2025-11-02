@@ -69,7 +69,7 @@ Notes:
 
 Positional arguments note:
 - `compressor` and `array` are both optional positionals. If you pass a single positional argument, it will be interpreted as `compressor`.
-- To provide an array, pass the compressor first, then the array; or use `-` to read the array from STDIN.
+- To provide an array, pass the compressor first, then the array or use `-` to read the array from STDIN.
 
 Examples:
 
@@ -104,5 +104,5 @@ Output includes average times for the spanning and overflow compressors.
 ### 5. Known limitations and notes
 
 - Negative integers are not supported in the current representation.
-- For large proportions of overflow values, `get(i)` in the overflow codec can be slower; an index cache would improve it.
-- To reproduce results on another machine, ensure Python 3.10+ and similar environment; times can vary by hardware.
+- For large proportions of overflow values, `get(i)` in the overflow codec can be slower an index cache would improve it.
+- To reproduce results on another machine, ensure Python 3.10+ and similar environment times can vary by hardware.
