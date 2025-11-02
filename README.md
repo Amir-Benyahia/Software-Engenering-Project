@@ -27,7 +27,6 @@ source venv/bin/activate
 
 # On Windows:
   .\venv\Scripts\activate
-<<<<<<< HEAD
 ```
 
 ### 3. Run
